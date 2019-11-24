@@ -1,0 +1,21 @@
+function degree = polynomial_degree(constrains) 
+
+c1 = constrains.q
+c2 = constrains.v
+c3 = constrains.a
+c4 = constrains.j 
+
+C = [c1 ; c2; c3; c4]
+degree = 8;
+
+for i = 1:4
+    for j = 1:2 
+        if C(i,j) == "ns"
+            degree = degree - 1; 
+            
+        end
+    end
+end
+
+degree = degree -1;
+end

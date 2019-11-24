@@ -1,0 +1,62 @@
+%Task 1 
+clear all
+clc
+close all
+%%
+%defining constrains
+constrains.q = [1 4];
+constrains.v = [0 0];
+constrains.a = ["ns" "ns"];
+constrains.j = ["ns" "ns"]; 
+%definign time span 
+
+time_span.t0 = 0;
+time_span.tf = 2;
+
+%claculating required degree polynomial 
+degree = polynomial_degree(constrains); 
+
+%calculating polynomial parameters 
+A = polynomial_params(time_span, constrains, degree);
+
+% position trajectory
+t = time_span.t0 :0.1: time_span.tf;
+
+position_traj =  position_trajectory(t, A, degree)
+
+figure('name', 'position trajector')
+plot(position_traj(:,1), position_traj(:,2))
+xlabel('time')
+ylabel('angel')
+grid on
+
+%% 
+% velocity profile 
+delta_q = constrains.q(2) - constrains.q(1);
+v_max = 2; 
+tau = 0.5; 
+acc_max = v_max/tau;
+T =  delta_q / v_max; 
+vel = []
+time =[]
+count = 1
+for i = 0:0.05:tau
+    val(count)= acc_max*i;
+    time(count) =i; 
+    count = count+1; 
+end
+
+for i = tau:0.05: T
+   val(count) = v_max ; 
+   time(count)= i;
+   count = count+1; 
+end
+
+for i = T:0.05:T+tau
+   val(count) = v_max- (acc_max*(i-T));
+   time(count) = i;
+   count= count+1; 
+end
+
+figure('name','velocity trajectory')
+plot(time, val)
